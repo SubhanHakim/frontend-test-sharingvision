@@ -1,0 +1,5 @@
+backend-test/
+node_modules
+dist
+*.db
+.env
