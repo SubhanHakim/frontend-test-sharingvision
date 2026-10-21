@@ -64,6 +64,8 @@ tbody tr:nth-child(odd) { background: #f6f7f7; }
 .field input, .field textarea { padding: 8px 10px; border: 1px solid #8c8f94; border-radius: 4px; background: #fff; font-weight: 400; }
 .field input:focus, .field textarea:focus { outline: 2px solid transparent; border-color: var(--link); box-shadow: 0 0 0 1px var(--link); }
 .field input[name='title'] { font-size: 18px; padding: 10px; }
+.field input[aria-invalid='true'], .field textarea[aria-invalid='true'] { border-color: var(--danger); }
+.field-error { color: var(--danger); font-size: 13px; font-weight: 400; }
 .field textarea { resize: vertical; min-height: 220px; line-height: 1.6; }
 .form-actions { display: flex; gap: 8px; }
 

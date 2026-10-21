@@ -14,12 +14,8 @@ export default function EditArticle() {
   }, [id]);
 
   const handleSubmit = async (changes) => {
-    try {
-      await updateArticle(id, changes);
-      navigate('/posts');
-    } catch (e) {
-      alert(e.message);
-    }
+    await updateArticle(id, changes);
+    navigate('/posts');
   };
 
   if (error) return <p className="alert">{error}</p>;

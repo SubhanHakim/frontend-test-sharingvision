@@ -6,12 +6,8 @@ export default function AddNew() {
   const navigate = useNavigate();
 
   const handleSubmit = async (article) => {
-    try {
-      await createArticle(article);
-      navigate('/posts');
-    } catch (e) {
-      alert(e.message);
-    }
+    await createArticle(article);
+    navigate('/posts');
   };
 
   return (

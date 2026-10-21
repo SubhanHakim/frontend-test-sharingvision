@@ -1,13 +1,36 @@
-const BASE_URL = `${import.meta.env.VITE_API_URL ?? 'http://localhost:8080'}/article`;
+const BASE_URL = `${import.meta.env.VITE_API_URL ?? 'http://localhost:8081'}/article`;
+
+export class ApiError extends Error {
+  constructor(message, fieldErrors = {}) {
+    super(message);
+    this.fieldErrors = fieldErrors;
+  }
+}
+
+// Mendukung dua format validasi: ["title: pesan", ...] dan { title: "pesan" }
+const parseFieldErrors = (errors) => {
+  if (!Array.isArray(errors)) return errors ?? {};
+  return Object.fromEntries(
+    errors.map((entry) => {
+      const i = entry.indexOf(': ');
+      return i < 0 ? ['form', entry] : [entry.slice(0, i), entry.slice(i + 2)];
+    })
+  );
+};
 
 const request = async (path, options) => {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
+  let res;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options,
+    });
+  } catch {
+    throw new ApiError('Tidak dapat terhubung ke server');
+  }
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.message ?? res.statusText);
+    throw new ApiError(body.error ?? body.message ?? 'Terjadi kesalahan', parseFieldErrors(body.errors));
   }
   return res;
 };
